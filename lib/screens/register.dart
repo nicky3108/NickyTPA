@@ -7,12 +7,20 @@ class Register extends StatefulWidget {
 
 class _RegisterState extends State<Register> {
 // Explicit
+  final formkey = GlobalKey<FormState>();
+  String nameString, emailString, passwordString;
 
 // Method
   Widget uploadButton() {
     return IconButton(
       icon: Icon(Icons.cloud_upload),
-      onPressed: () {},
+      onPressed: () {
+        print('Click Upload');
+        if (formkey.currentState.validate()) {}
+        formkey.currentState.save();
+        print(
+            'Name = $nameString, Email = $emailString, Password = $passwordString');
+      },
     );
   }
 
@@ -36,6 +44,14 @@ class _RegisterState extends State<Register> {
           color: Colors.pink,
         ),
       ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'Please Fill Name in Blank';
+        }
+      },
+      onSaved: (String value) {
+        nameString = value;
+      },
     );
   }
 
@@ -60,6 +76,14 @@ class _RegisterState extends State<Register> {
           color: Colors.green,
         ),
       ),
+      validator: (String value) {
+        if (!((value.contains('@')) && (value.contains('.')))) {
+          return 'Email Format False';
+        }
+      },
+      onSaved: (String value) {
+        emailString = value;
+      },
     );
   }
 
@@ -83,6 +107,14 @@ class _RegisterState extends State<Register> {
           color: Colors.yellow[600],
         ),
       ),
+      validator: (String value) {
+        if (value.length <= 5) {
+          return 'Password False';
+        }
+      },
+      onSaved: (String value) {
+        passwordString = value;
+      },
     );
   }
 
@@ -100,12 +132,15 @@ class _RegisterState extends State<Register> {
         alignment: Alignment.topCenter,
         child: Container(
           width: 250.0,
-          child: Column(
-            children: <Widget>[
-              nameText(),
-              emailText(),
-              passwordText(),
-            ],
+          child: Form(
+            key: formkey,
+            child: Column(
+              children: <Widget>[
+                nameText(),
+                emailText(),
+                passwordText(),
+              ],
+            ),
           ),
         ),
       ),
