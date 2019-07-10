@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "615131162690",
+    "firebase_url": "https://nickytpa-81944.firebaseio.com",
+    "project_id": "nickytpa-81944",
+    "storage_bucket": "nickytpa-81944.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615131162690:android:7685269646e29442",
+        "android_client_info": {
+          "package_name": "th.or.tpa.nicky_tpa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615131162690-nl4k7gpclfvbun9gt5q3e0nfptjqn57b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBmD8sGp4u-4cxlBJoLH1UE775Bums-xt4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615131162690-nl4k7gpclfvbun9gt5q3e0nfptjqn57b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
