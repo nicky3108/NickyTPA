@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:nicky_tpa/screens/my_service.dart';
 import 'package:nicky_tpa/screens/register.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -19,6 +21,27 @@ class _AuthenState extends State<Authen> {
 //Explicit
 
 //Method
+  @override
+  void initState() {
+    super.initState();
+    checkStatus();
+  }
+
+  Future<void> checkStatus() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    FirebaseUser firebaseUser = await firebaseAuth.currentUser();
+    if (firebaseUser != null) {
+      moveToService();
+    }
+  }
+
+  void moveToService() {
+    var serviceRoute =
+        MaterialPageRoute(builder: (BuildContext context) => MyService());
+    Navigator.of(context)
+        .pushAndRemoveUntil(serviceRoute, (Route<dynamic> route) => false);
+  }
+
   Widget showlogo() {
     return Container(
       width: 150.0,
@@ -86,9 +109,9 @@ class _AuthenState extends State<Authen> {
         print('You Click Sign Up');
 
 // Create Route
-var registerRoute = MaterialPageRoute(builder: (BuildContext context) => Register());
-Navigator.of(context).push(registerRoute);
-
+        var registerRoute =
+            MaterialPageRoute(builder: (BuildContext context) => Register());
+        Navigator.of(context).push(registerRoute);
       },
     );
   }
