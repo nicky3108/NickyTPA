@@ -19,6 +19,8 @@ class Authen extends StatefulWidget {
 
 class _AuthenState extends State<Authen> {
 //Explicit
+  final formKey = GlobalKey<FormState>();
+  String emailString, passwordString;
 
 //Method
   @override
@@ -67,12 +69,20 @@ class _AuthenState extends State<Authen> {
   Widget emailText() {
     return Container(
       width: 250.0,
-      child: TextField(
+      child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           labelText: 'Email :',
           hintText: 'you@email.com',
         ),
+        validator: (String vale) {
+          if (vale.isEmpty) {
+            return 'Plaes Fill Email';
+          }
+        },
+        onSaved: (String value) {
+          emailString = value;
+        },
       ),
     );
   }
@@ -86,6 +96,14 @@ class _AuthenState extends State<Authen> {
           labelText: 'Password :',
           hintText: 'More 6 Charactor',
         ),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return 'Plaes Fill Password';
+          }
+        },
+        onSaved: (String value) {
+          passwordString = value;
+        },
       ),
     );
   }
@@ -97,8 +115,25 @@ class _AuthenState extends State<Authen> {
         'Sign In',
         style: TextStyle(color: Colors.white),
       ),
-      onPressed: () {},
+      onPressed: () {
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          checkAuthen();
+        }
+      },
     );
+  }
+
+  Future<void> checkAuthen() async {
+    print('email = $emailString, password = $passwordString');
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth.signInWithEmailAndPassword(
+        email: emailString, password: passwordString).then((response){
+          moveToService();
+        }).catchError((response){
+          String messageString = response.message;
+          print('message = $messageString');
+        });
   }
 
   Widget signUpBotton() {
@@ -153,14 +188,17 @@ class _AuthenState extends State<Authen> {
         ),
         padding: EdgeInsets.only(top: 60.0),
         alignment: Alignment.topCenter,
-        child: Column(
-          children: <Widget>[
-            showlogo(),
-            showText(),
-            emailText(),
-            passwordText(),
-            showButton(),
-          ],
+        child: Form(
+          key: formKey,
+          child: Column(
+            children: <Widget>[
+              showlogo(),
+              showText(),
+              emailText(),
+              passwordText(),
+              showButton(),
+            ],
+          ),
         ),
       ),
     );
