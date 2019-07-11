@@ -21,8 +21,21 @@ class _AuthenState extends State<Authen> {
 //Explicit
   final formKey = GlobalKey<FormState>();
   String emailString, passwordString;
+  final scaffoldKey = GlobalKey<ScaffoldState>();
 
 //Method
+  void mySnackBar(String messageString) {
+    SnackBar snackBar = SnackBar(
+      content: Text(messageString),
+      duration: Duration(seconds: 8),backgroundColor: Colors.orange[800],
+      action: SnackBarAction(
+        label: 'Close',
+        onPressed: () {},
+      ),
+    );
+    scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -127,13 +140,16 @@ class _AuthenState extends State<Authen> {
   Future<void> checkAuthen() async {
     print('email = $emailString, password = $passwordString');
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-    await firebaseAuth.signInWithEmailAndPassword(
-        email: emailString, password: passwordString).then((response){
-          moveToService();
-        }).catchError((response){
-          String messageString = response.message;
-          print('message = $messageString');
-        });
+    await firebaseAuth
+        .signInWithEmailAndPassword(
+            email: emailString, password: passwordString)
+        .then((response) {
+      moveToService();
+    }).catchError((response) {
+      String messageString = response.message;
+      print('message = $messageString');
+      mySnackBar(messageString);
+    });
   }
 
   Widget signUpBotton() {
@@ -177,6 +193,7 @@ class _AuthenState extends State<Authen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       resizeToAvoidBottomPadding: false,
       body: Container(
         decoration: BoxDecoration(
